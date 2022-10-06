@@ -1,0 +1,25 @@
+{
+    "name": "srdante/antibotlinks",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Srdante\\AntiBotLinks\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "srdante",
+            "email": "minidantebtc@gmail.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^2.7",
+        "illuminate/cache": "^9.34",
+        "illuminate/support": "^9.34"
+    },
+    "require-dev": {
+        "illuminate/container": "^9.34",
+        "illuminate/filesystem": "^9.34"
+    }
+}
