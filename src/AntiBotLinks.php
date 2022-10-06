@@ -60,9 +60,8 @@ class AntiBotLinks
     {
         return Cache::remember($this->identifierHash, $this->expiresIn, function () use ($amount) {
             // Randomly get set of words and randomize it words order
-            $universe = collect(collect($this->wordUniverse)->random())
-                ->shuffle()
-                ->slice(0, $amount);
+            $words    = collect($this->wordUniverse)->random();
+            $universe = collect($this->getRandomShuffled((array) $words, $amount));
 
             // 50% of chance to flip solution/answers
             if (random_int(0, 1)) {
