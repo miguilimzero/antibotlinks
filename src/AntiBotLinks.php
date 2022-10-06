@@ -68,16 +68,16 @@ class AntiBotLinks
                 $universe = $universe->flip();
             }
 
-            // Generate images without any repeated, IMPORTANT: Randomize images order (AFTER CREATE SOLUTION)
+            // Generate images without any repeated
             $options = $universe->map(fn ($after) => [
                 'id'    => random_int(1, 99999),
                 'image' => $this->generateRandomImage($after),
-            ])->shuffle();
+            ]);
 
             return [
                 'links' => [
                     'phrase' => $this->generateRandomImage($universe->keys()->join(', ')),
-                    'options' => $options->all(),
+                    'options' => $options->shuffle()->all(), // IMPORTANT: Shuffle images order only after generate the phrase!
                 ],
                 'solution' => $options->pluck('id')->join(''),
             ];
