@@ -2,6 +2,10 @@
 
 AntiBotLinks is an easy to install self-hosted image captcha library. Through a predefined dictionary, the library generates images that must be selected in a specific order.
 
+This captcha solution may not be 100% secure against bots, but in combination with other popular captcha services, it will be an extra layer of security for your platform.
+
+![example](https://user-images.githubusercontent.com/35383529/220480833-dcd2b516-9b85-4944-8464-6a6f8d92fdb2.jpg)
+
 > Note: Currently this package uses the Laravel Cache driver to store data. For this reason, you may find it difficult to use this package in a project that is not a Laravel project.
 
 ## Contents
