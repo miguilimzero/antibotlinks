@@ -5,16 +5,6 @@ namespace Srdante\AntiBotLinks;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManagerStatic as Image;
 
-/**
- * AntiBotLinks-Remake Library.
- *
- * This Library is a remake of AntiBotLinks from FBU Script created by MakeJar.
- *
- * @version 2.0.0
- *
- * @author Dante <minidantebtc@gmail.com>
- * @author MakeJar
- */
 class AntiBotLinks
 {
     use Traits\HasOptions;
