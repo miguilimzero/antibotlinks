@@ -28,7 +28,7 @@ composer require srdante/antibotlinks
 
 ## Usage
 
-To get started with the package, you must use the `make()` static method and pass as first parameter an identifier string. This identifier parameter will be used to store & get the generated challenge and solution (generally you should use the User ID, IP Address, or a generated cookie).
+To get started with the package, you must use the `make()` static method and pass as first parameter an identifier string. This identifier parameter will be used to store & get the generated challenge and solution.
 
 ```php
 Use Srdante\AntiBotLinks\AntiBotLinks;
@@ -36,8 +36,9 @@ Use Srdante\AntiBotLinks\AntiBotLinks;
 $antibotlinks = AntiBotLinks::make('1');
 
 var_dump($antibotlinks->generateLinks());
-
 ```
+
+> Generally you should use the user id, ip address, or a generated cookie.
 
 ## Generate Links
 
