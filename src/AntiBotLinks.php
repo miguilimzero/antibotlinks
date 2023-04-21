@@ -69,7 +69,7 @@ class AntiBotLinks
                     'phrase' => $this->generateRandomImage($universe->keys()->join(', ')),
                     'options' => $options->shuffle()->all(), // IMPORTANT: Shuffle images order only after generate the phrase!
                 ],
-                'solution' => $options->pluck('id')->join(''),
+                'solution' => $options->pluck('id'),
             ];
         })['links'];
     }
@@ -93,7 +93,7 @@ class AntiBotLinks
             return false;
         }
 
-        return $solution === trim($value);
+        return join('', $solution) === trim($value);
     }
 
     /**
