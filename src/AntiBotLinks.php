@@ -93,7 +93,7 @@ class AntiBotLinks
             return false;
         }
 
-        return join('', $solution) === trim($value);
+        return $solution->join('') === trim($value);
     }
 
     /**
