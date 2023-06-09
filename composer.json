@@ -15,11 +15,11 @@
     ],
     "require": {
         "intervention/image": "^2.7",
-        "illuminate/cache": "^9.34",
-        "illuminate/support": "^9.34"
+        "illuminate/cache": "^9.34|^10.0",
+        "illuminate/support": "^9.34|^10.0"
     },
     "require-dev": {
-        "illuminate/container": "^9.34",
-        "illuminate/filesystem": "^9.34"
+        "illuminate/container": "^9.34|^10.0",
+        "illuminate/filesystem": "^9.34|^10.0"
     }
 }
