@@ -2,8 +2,8 @@
 
 namespace Miguilim\AntiBotLinks;
 
-use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManagerStatic as Image;
+use Miguilim\AntiBotLinks\CacheAdapters\AbstractCacheAdapter;
 
 class AntiBotLinks
 {
@@ -30,7 +30,7 @@ class AntiBotLinks
     /**
      * Scan font directory in order to list available fonts.
      */
-    public function __construct(protected string $identifier, protected int $expiresIn)
+    public function __construct(protected string $identifier, protected AbstractCacheAdapter $cacheAdapter, protected int $expiresIn)
     {
         $this->identifierHash = md5('antibotlinks.' . $this->identifier);
     }
@@ -38,9 +38,9 @@ class AntiBotLinks
     /**
      * Make new AntiBotLinks instance.
      */
-    public static function make(string $identifier, int $expiresIn = 300): self
+    public static function make(string $identifier, AbstractCacheAdapter $cacheAdapter, int $expiresIn = 300): self
     {
-        return new static($identifier, $expiresIn);
+        return new static($identifier, $cacheAdapter, $expiresIn);
     }
 
     /**
@@ -48,28 +48,31 @@ class AntiBotLinks
      */
     public function generateLinks(int $amount = 4): array
     {
-        return Cache::remember($this->identifierHash, $this->expiresIn, function () use ($amount) {
+        return $this->cacheAdapter->remember($this->identifierHash, $this->expiresIn, function () use ($amount) {
             // Randomly get set of words and randomize it words order
-            $words    = collect($this->wordUniverse)->random();
-            $universe = collect($this->getRandomShuffled((array) $words, $amount));
+            $words    = $this->wordUniverse[array_rand($this->wordUniverse)];
+            $universe = $this->getRandomShuffled((array) $words, $amount);
 
             // 50% of chance to flip solution/answers
             if (random_int(0, 1)) {
-                $universe = $universe->flip();
+                $universe = array_flip($universe);
             }
 
             // Generate images without any repeated
-            $options = $universe->map(fn ($after) => [
+            $options = array_map(fn ($after) => [
                 'id'    => random_int(1, 99999),
                 'image' => $this->generateRandomImage($after),
-            ]);
+            ], $universe);
+
+            $optionsShuffled = $options;
+            shuffle($optionsShuffled);
 
             return [
                 'links' => [
-                    'phrase' => $this->generateRandomImage($universe->keys()->join(', ')),
-                    'options' => $options->shuffle()->all(), // IMPORTANT: Shuffle images order only after generate the phrase!
+                    'phrase' => $this->generateRandomImage(join(', ', array_keys($universe))),
+                    'options' => $optionsShuffled, // IMPORTANT: Shuffle images order only after generate the phrase! (or shuffle with a different variable)
                 ],
-                'solution' => $options->pluck('id'),
+                'solution' => array_column($options, 'id'),
             ];
         })['links'];
     }
@@ -79,7 +82,7 @@ class AntiBotLinks
      */
     public function flushLinks(): bool
     {
-        return Cache::forget($this->identifierHash);
+        return $this->cacheAdapter->forget($this->identifierHash);
     }
 
     /**
@@ -87,7 +90,7 @@ class AntiBotLinks
      */
     public function validateAnswer(string $value): bool
     {
-        $solution = Cache::get($this->identifierHash)['solution'] ?? null;
+        $solution = $this->cacheAdapter->get($this->identifierHash)['solution'] ?? null;
 
         if (! $solution) {
             return false;
