@@ -1,6 +1,6 @@
 <?php
 
-namespace Srdante\AntiBotLinks;
+namespace Miguilim\AntiBotLinks;
 
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManagerStatic as Image;

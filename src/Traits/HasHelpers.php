@@ -1,6 +1,6 @@
 <?php
 
-namespace Srdante\AntiBotLinks\Traits;
+namespace Miguilim\AntiBotLinks\Traits;
 
 trait HasHelpers
 {

@@ -2,7 +2,7 @@
 
 require 'bootstrap.php';
 
-use Srdante\AntiBotLinks\AntiBotLinks;
+use Miguilim\AntiBotLinks\AntiBotLinks;
 
 $antiBotLinks = AntiBotLinks::make('1', 60);
 

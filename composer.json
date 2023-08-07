@@ -1,25 +1,20 @@
 {
-    "name": "srdante/antibotlinks",
+    "name": "miguilim/antibotlinks",
+    "description": "An easy to install self-hosted image captcha library implemented with PHP + InterventionImage.",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Srdante\\AntiBotLinks\\": "src/"
+            "Miguilim\\AntiBotLinks\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "srdante",
-            "email": "minidantebtc@gmail.com"
-        }
-    ],
     "require": {
         "intervention/image": "^2.7",
-        "illuminate/cache": "^9.34|^10.0",
-        "illuminate/support": "^9.34|^10.0"
+        "illuminate/cache": "^9.0|^10.0",
+        "illuminate/support": "^9.0|^10.0"
     },
     "require-dev": {
-        "illuminate/container": "^9.34|^10.0",
-        "illuminate/filesystem": "^9.34|^10.0"
+        "illuminate/container": "^9.0|^10.0",
+        "illuminate/filesystem": "^9.0|^10.0"
     }
 }

@@ -23,7 +23,7 @@ This captcha solution may not be 100% secure against bots, but in combination wi
 You can install the package via composer:
 
 ```sh
-composer require srdante/antibotlinks
+composer require miguilim/antibotlinks
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ composer require srdante/antibotlinks
 To get started with the package, you must use the `make()` static method and pass as first parameter an identifier string. This identifier parameter will be used to store & get the generated challenge and solution.
 
 ```php
-Use Srdante\AntiBotLinks\AntiBotLinks;
+Use Miguilim\AntiBotLinks\AntiBotLinks;
 
 $antibotlinks = AntiBotLinks::make('1');
 
