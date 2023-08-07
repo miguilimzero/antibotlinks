@@ -6,12 +6,11 @@ This captcha solution may not be 100% secure against bots, but in combination wi
 
 ![example](https://user-images.githubusercontent.com/35383529/220480833-dcd2b516-9b85-4944-8464-6a6f8d92fdb2.jpg)
 
-> Note: Currently this package uses the Laravel Cache driver to store data. For this reason, you may find it difficult to use this package in a project that is not a Laravel project.
-
 ## Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Cache Adapters](#cache-adapters)
 - [Generate Links](#generate-links)
 - [Validate Answer](#validate-answer)
 - [Flush Links](#flush-links)
@@ -32,13 +31,45 @@ To get started with the package, you must use the `make()` static method and pas
 
 ```php
 Use Miguilim\AntiBotLinks\AntiBotLinks;
+use Miguilim\AntiBotLinks\CacheAdapters\SimpleFileCacheAdapter;
 
-$antibotlinks = AntiBotLinks::make('1');
+$antibotlinks = AntiBotLinks::make('1', new SimpleFileCacheAdapter(__DIR__ . '/cache'));
 
 var_dump($antibotlinks->generateLinks());
 ```
 
 > Generally you should use the user id, ip address, or a generated cookie.
+
+## Cache Adapters
+
+In order to use the AntiBotLinks class, you will need to choose a cache adapter so it can store the generated challenges somewhere. The package ships by default with the following adapters:
+
+- `\Miguilim\AntiBotLinks\CacheAdapters\LaravelCacheAdapter`
+- `\Miguilim\AntiBotLinks\CacheAdapters\SimpleFileCacheAdapter`
+
+However, you can create and use your own adapter extending the abstract adapter class:
+
+```php
+use Miguilim\AntiBotLinks\CacheAdapters\AbstractCacheAdapter;
+
+class MyCustomCacheAdapter extends AbstractCacheAdapter
+{
+    public function remember(string $key, int $expiresIn, callable $callback): mixed
+    {
+        //
+    }
+
+    public function get(string $key): mixed
+    {
+        //
+    }
+
+    public function forget(string $key): bool
+    {
+        //
+    }
+}
+```
 
 ## Generate Links
 
