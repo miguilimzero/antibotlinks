@@ -2,7 +2,10 @@
 
 namespace Miguilim\AntiBotLinks;
 
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Geometry\Line;
+use Intervention\Image\Typography\Font;
 use Miguilim\AntiBotLinks\CacheAdapters\AbstractCacheAdapter;
 
 class AntiBotLinks
@@ -114,7 +117,8 @@ class AntiBotLinks
         $shadowColor = $this->generateRandomColor(isShadowColor: true);
 
         // Create blank canvas
-        $image = Image::canvas($width, $height);
+        $manager = new ImageManager(new Driver());
+        $image = $manager->create($width, $height);
 
         // Add link background
         if ($this->background) {
@@ -123,20 +127,20 @@ class AntiBotLinks
         }
 
         // Add link text
-        $image->text($word, (int) ($width / 2), (int) ($height / 2) + 1, function ($font) use ($angle, $fontFile, $shadowColor): void {
-            $font->angle($angle);
-            $font->file($fontFile);
-            $font->size(22);
-            $font->align('center');
-            $font->valign('middle');
-            $font->color($shadowColor);
-        })->text($word, (int) ($width / 2), (int) ($height / 2), function ($font) use ($angle, $fontFile, $textColor): void {
-            $font->angle($angle);
-            $font->file($fontFile);
-            $font->size(22);
-            $font->align('center');
-            $font->valign('middle');
-            $font->color($textColor);
+        $image->text($word, (int) ($width / 2), (int) ($height / 2) + 1, function (Font $font) use ($angle, $fontFile, $shadowColor): void {
+            $font->setFilename($fontFile);
+            $font->setAngle($angle);
+            $font->setSize(22);
+            $font->setAlignment('center');
+            $font->setValignment('middle');
+            $font->setColor($shadowColor);
+        })->text($word, (int) ($width / 2), (int) ($height / 2), function (Font $font) use ($angle, $fontFile, $textColor): void {
+            $font->setFilename($fontFile);
+            $font->setAngle($angle);
+            $font->setSize(22);
+            $font->setAlignment('center');
+            $font->setValignment('middle');
+            $font->setColor($textColor);
         });
 
         // Add link noise
@@ -144,15 +148,18 @@ class AntiBotLinks
             for ($i = 0; $i < round($width / random_int(16, 22) * 10); ++$i) {
                 $x = random_int(1, $width  - 3);
                 $y = random_int(1, $height - 3);
-                $image->line($x, $y, $x + random_int(1, 2), $y + ((random_int(0, 1)) ? -1 : +1), function ($draw) use ($textColor): void {
-                    $draw->color($textColor);
+
+                $image->drawLine(function (Line $line) use ($x, $y, $textColor) {
+                    $line->from($x, $y);
+                    $line->to($x + random_int(1, 2), $y + ((random_int(0, 1)) ? -1 : +1));
+                    $line->setBackgroundColor($textColor);
                 });
             }
         }
 
         return [
             'width'  => $width,
-            'base64' => $image->encode('data-url')->encoded
+            'base64' => $image->toJpeg()->toDataUri()
         ];
     }
 
