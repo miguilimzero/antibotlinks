@@ -4,8 +4,10 @@ namespace Miguilim\AntiBotLinks;
 
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Geometry\Factories\LineFactory;
 use Intervention\Image\Geometry\Line;
 use Intervention\Image\Typography\Font;
+use Intervention\Image\Typography\FontFactory;
 use Miguilim\AntiBotLinks\CacheAdapters\AbstractCacheAdapter;
 
 class AntiBotLinks
@@ -127,20 +129,20 @@ class AntiBotLinks
         }
 
         // Add link text
-        $image->text($word, (int) ($width / 2), (int) ($height / 2) + 1, function (Font $font) use ($angle, $fontFile, $shadowColor): void {
-            $font->setFilename($fontFile);
-            $font->setAngle($angle);
-            $font->setSize(22);
-            $font->setAlignment('center');
-            $font->setValignment('middle');
-            $font->setColor($shadowColor);
-        })->text($word, (int) ($width / 2), (int) ($height / 2), function (Font $font) use ($angle, $fontFile, $textColor): void {
-            $font->setFilename($fontFile);
-            $font->setAngle($angle);
-            $font->setSize(22);
-            $font->setAlignment('center');
-            $font->setValignment('middle');
-            $font->setColor($textColor);
+        $image->text($word, (int) ($width / 2), (int) ($height / 2) + 1, function (FontFactory $font) use ($angle, $fontFile, $shadowColor): void {
+            $font->filename($fontFile);
+            $font->angle($angle);
+            $font->size(22);
+            $font->align('center');
+            $font->valign('middle');
+            $font->color($shadowColor);
+        })->text($word, (int) ($width / 2), (int) ($height / 2), function (FontFactory $font) use ($angle, $fontFile, $textColor): void {
+            $font->filename($fontFile);
+            $font->angle($angle);
+            $font->size(22);
+            $font->align('center');
+            $font->valign('middle');
+            $font->color($textColor);
         });
 
         // Add link noise
@@ -149,10 +151,10 @@ class AntiBotLinks
                 $x = random_int(1, $width  - 3);
                 $y = random_int(1, $height - 3);
 
-                $image->drawLine(function (Line $line) use ($x, $y, $textColor) {
+                $image->drawLine(function (LineFactory $line) use ($x, $y, $textColor) {
                     $line->from($x, $y);
                     $line->to($x + random_int(1, 2), $y + ((random_int(0, 1)) ? -1 : +1));
-                    $line->setBackgroundColor($textColor);
+                    $line->color($textColor);
                 });
             }
         }
