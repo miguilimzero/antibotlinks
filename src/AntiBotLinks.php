@@ -123,10 +123,10 @@ class AntiBotLinks
         $image = $manager->create($width, $height);
 
         // Add link background
-        if ($this->background) {
-            $image->fill($this->asset('backgrounds/bg-' . random_int(1, 3) . '-' . (($this->darkTheme) ? 'l' : 'd') . '.png'));
-            // ->brightness(($this->darkTheme) ? mt_rand(5, 15) : mt_rand(55, 75));
-        }
+        // if ($this->background) {
+        //     $image->fill($this->asset('backgrounds/bg-' . random_int(1, 3) . '-' . (($this->darkTheme) ? 'l' : 'd') . '.png'));
+        //     // ->brightness(($this->darkTheme) ? mt_rand(5, 15) : mt_rand(55, 75));
+        // }
 
         // Add link text
         $image->text($word, (int) ($width / 2), (int) ($height / 2) + 1, function (FontFactory $font) use ($angle, $fontFile, $shadowColor): void {
