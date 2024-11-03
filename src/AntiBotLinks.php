@@ -2,11 +2,10 @@
 
 namespace Miguilim\AntiBotLinks;
 
+use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Geometry\Factories\LineFactory;
-use Intervention\Image\Geometry\Line;
-use Intervention\Image\Typography\Font;
 use Intervention\Image\Typography\FontFactory;
 use Miguilim\AntiBotLinks\CacheAdapters\AbstractCacheAdapter;
 
@@ -123,6 +122,7 @@ class AntiBotLinks
         $image = $manager->create($width, $height);
 
         // Add link background
+        // TODO: Reimplement backgrounds. Not working with current version of InterventionImage.
         // if ($this->background) {
         //     $image->fill($this->asset('backgrounds/bg-' . random_int(1, 3) . '-' . (($this->darkTheme) ? 'l' : 'd') . '.png'));
         //     // ->brightness(($this->darkTheme) ? mt_rand(5, 15) : mt_rand(55, 75));
@@ -166,18 +166,20 @@ class AntiBotLinks
     }
 
     /**
-     * Generate random rgba() color array.
+     * Generate random rgb() color array.
      */
-    protected function generateRandomColor(bool $isShadowColor = false): array
+    protected function generateRandomColor(bool $isShadowColor = false): Color
     {
+        // TODO: Reimplement 4th channel (rgba). Not working with current version of InterventionImage.
+
         if ($this->darkTheme) {
             return ($isShadowColor)
-                ? [random_int(1, 80), random_int(1, 80), random_int(1, 80), random_int(45, 100) / 100]
-                : [random_int(214, 254), random_int(214, 254), random_int(214, 254), random_int(75, 100) / 100];
+                ? new Color(random_int(1, 80), random_int(1, 80), random_int(1, 80))
+                : new Color(random_int(214, 254), random_int(214, 254), random_int(214, 254));
         }
 
         return ($isShadowColor)
-            ? [random_int(174, 254), random_int(174, 254), random_int(174, 254), random_int(75, 100) / 100]
-            : [random_int(1, 80), random_int(1, 80), random_int(1, 80), random_int(45, 100) / 100];
+            ? new Color(random_int(174, 254), random_int(174, 254), random_int(174, 254))
+            : new Color(random_int(1, 80), random_int(1, 80), random_int(1, 80));
     }
 }
